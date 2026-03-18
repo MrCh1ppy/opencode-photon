@@ -2,45 +2,45 @@
   "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/master/assets/oh-my-opencode.schema.json",
   "categories": {
     "writing": {
-      "model": "zawx/GLM-5",
+      "model": "zhipuai-coding-plan/glm-5",
       "temperature": 0.4
     },
     "visual-engineering": {
-      "model": "zawx/GLM-5",
+      "model": "zhipuai-coding-plan/glm-5",
       "temperature": 0.6,
       "skills": [
         "frontend-ui-ux"
       ]
     },
     "ultrabrain": {
-      "model": "zawx/GLM-5",
+      "model": "zhipuai-coding-plan/glm-5",
       "temperature": 0.2,
       "variant": "xhigh"
     },
     "artistry": {
-      "model": "zawx/GLM-5",
+      "model": "zhipuai-coding-plan/glm-5",
       "variant": "max"
     },
     "quick": {
       "model": "minimax-cn-coding-plan/MiniMax-M2.5-highspeed"
     },
     "unspecified-low": {
-      "model": "zawx/GLM-4.5",
+      "model": "zhipuai-coding-plan/glm-4.5",
       "variant": "medium"
     },
     "unspecified-high": {
-      "model": "zawx/GLM-5",
+      "model": "zhipuai-coding-plan/glm-5",
       "variant": "high"
     }
   },
   "agents": {
     "sisyphus": {
-      "model": "zawx/GLM-5",
+      "model": "zhipuai-coding-plan/glm-5",
       "temperature": 0.2,
       "variant": "xhigh"
     },
     "sisyphus-junior": {
-      "model": "zawx/GLM-5",
+      "model": "zhipuai-coding-plan/glm-5",
       "temperature": 0.2,
       "variant": "xhigh"
     },
@@ -50,16 +50,16 @@
       "variant": "xhigh"
     },
     "prometheus": {
-      "model": "zawx/GLM-5",
+      "model": "zhipuai-coding-plan/glm-5",
       "temperature": 0.1,
       "variant": "high"
     },
     "atlas": {
-      "model": "zawx/GLM-5",
+      "model": "zhipuai-coding-plan/glm-5",
       "temperature": 0.2
     },
     "oracle": {
-      "model": "zawx/GLM-5",
+      "model": "zhipuai-coding-plan/glm-5",
       "temperature": 0.2,
       "variant": "high"
     },
@@ -72,15 +72,15 @@
       "temperature": 0.2
     },
     "multimodal-looker": {
-      "model": "zawx/GLM-5",
+      "model": "zhipuai-coding-plan/glm-5",
       "temperature": 0.2
     },
     "metis": {
-      "model": "zawx/GLM-5",
+      "model": "zhipuai-coding-plan/glm-5",
       "variant": "xhigh"
     },
     "momus": {
-      "model": "zawx/GLM-5",
+      "model": "zhipuai-coding-plan/glm-5",
       "variant": "xhigh"
     }
   },
