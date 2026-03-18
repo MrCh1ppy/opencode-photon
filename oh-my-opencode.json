@@ -2,45 +2,45 @@
   "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/master/assets/oh-my-opencode.schema.json",
   "categories": {
     "writing": {
-      "model": "openai/gpt-5.2",
+      "model": "zawx/GLM-5",
       "temperature": 0.4
     },
     "visual-engineering": {
-      "model": "openai/gpt-5.2",
+      "model": "zawx/GLM-5",
       "temperature": 0.6,
       "skills": [
         "frontend-ui-ux"
       ]
     },
     "ultrabrain": {
-      "model": "openai/gpt-5.3-codex",
+      "model": "zawx/GLM-5",
       "temperature": 0.2,
       "variant": "xhigh"
     },
     "artistry": {
-      "model": "openai/gpt-5.2",
+      "model": "zawx/GLM-5",
       "variant": "max"
     },
     "quick": {
       "model": "minimax-cn-coding-plan/MiniMax-M2.5-highspeed"
     },
     "unspecified-low": {
-      "model": "openai/gpt-5.3-codex",
+      "model": "zawx/GLM-4.5",
       "variant": "medium"
     },
     "unspecified-high": {
-      "model": "openai/gpt-5.2",
+      "model": "zawx/GLM-5",
       "variant": "high"
     }
   },
   "agents": {
     "sisyphus": {
-      "model": "openai/gpt-5.3-codex",
+      "model": "zawx/GLM-5",
       "temperature": 0.2,
       "variant": "xhigh"
     },
     "sisyphus-junior": {
-      "model": "openai/gpt-5.3-codex",
+      "model": "zawx/GLM-5",
       "temperature": 0.2,
       "variant": "xhigh"
     },
@@ -50,16 +50,16 @@
       "variant": "xhigh"
     },
     "prometheus": {
-      "model": "openai/gpt-5.2",
+      "model": "zawx/GLM-5",
       "temperature": 0.1,
       "variant": "high"
     },
     "atlas": {
-      "model": "openai/gpt-5.3-codex",
+      "model": "zawx/GLM-5",
       "temperature": 0.2
     },
     "oracle": {
-      "model": "openai/gpt-5.2",
+      "model": "zawx/GLM-5",
       "temperature": 0.2,
       "variant": "high"
     },
@@ -68,19 +68,19 @@
       "temperature": 0.2
     },
     "librarian": {
-      "model": "minimax-cn-coding-plan/minimax-m2.5-highspeed",
+      "model": "minimax-cn-coding-plan/MiniMax-M2.5-highspeed",
       "temperature": 0.2
     },
     "multimodal-looker": {
-      "model": "openai/gpt-5.2",
+      "model": "zawx/GLM-5",
       "temperature": 0.2
     },
     "metis": {
-      "model": "openai/gpt-5.2",
+      "model": "zawx/GLM-5",
       "variant": "xhigh"
     },
     "momus": {
-      "model": "openai/gpt-5.2",
+      "model": "zawx/GLM-5",
       "variant": "xhigh"
     }
   },
