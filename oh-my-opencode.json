@@ -2,64 +2,64 @@
   "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/master/assets/oh-my-opencode.schema.json",
   "categories": {
     "writing": {
-      "model": "zhipuai-coding-plan/glm-5",
+      "model": "openai/gpt-5.2",
       "temperature": 0.4
     },
     "visual-engineering": {
-      "model": "zhipuai-coding-plan/glm-5",
+      "model": "openai/gpt-5.2",
       "temperature": 0.6,
       "skills": [
         "frontend-ui-ux"
       ]
     },
     "ultrabrain": {
-      "model": "zhipuai-coding-plan/glm-5",
+      "model": "openai/gpt-5.3-codex",
       "temperature": 0.2,
       "variant": "xhigh"
     },
     "artistry": {
-      "model": "zhipuai-coding-plan/glm-5",
+      "model": "openai/gpt-5.2",
       "variant": "max"
     },
     "quick": {
       "model": "minimax-cn-coding-plan/MiniMax-M2.5-highspeed"
     },
     "unspecified-low": {
-      "model": "zhipuai-coding-plan/glm-4.5",
+      "model": "openai/gpt-5.3-codex",
       "variant": "medium"
     },
     "unspecified-high": {
-      "model": "zhipuai-coding-plan/glm-5",
+      "model": "openai/gpt-5.2",
       "variant": "high"
     }
   },
   "agents": {
     "sisyphus": {
-      "model": "zhipuai-coding-plan/glm-5",
+      "model": "openai/gpt-5.3-codex",
       "temperature": 0.2,
       "variant": "xhigh"
     },
     "sisyphus-junior": {
-      "model": "zhipuai-coding-plan/glm-5",
+      "model": "openai/gpt-5.3-codex",
       "temperature": 0.2,
       "variant": "xhigh"
     },
     "hephaestus": {
-      "model": "zawx/GLM-5",
+      "model": "openai/gpt-5.3-codex",
       "temperature": 0.2,
       "variant": "xhigh"
     },
     "prometheus": {
-      "model": "zhipuai-coding-plan/glm-5",
+      "model": "openai/gpt-5.2",
       "temperature": 0.1,
       "variant": "high"
     },
     "atlas": {
-      "model": "zhipuai-coding-plan/glm-5",
+      "model": "openai/gpt-5.3-codex",
       "temperature": 0.2
     },
     "oracle": {
-      "model": "zhipuai-coding-plan/glm-5",
+      "model": "openai/gpt-5.2",
       "temperature": 0.2,
       "variant": "high"
     },
@@ -68,19 +68,19 @@
       "temperature": 0.2
     },
     "librarian": {
-      "model": "minimax-cn-coding-plan/MiniMax-M2.5-highspeed",
+      "model": "minimax-cn-coding-plan/minimax-m2.5-highspeed",
       "temperature": 0.2
     },
     "multimodal-looker": {
-      "model": "zhipuai-coding-plan/glm-5",
+      "model": "openai/gpt-5.2",
       "temperature": 0.2
     },
     "metis": {
-      "model": "zhipuai-coding-plan/glm-5",
+      "model": "openai/gpt-5.2",
       "variant": "xhigh"
     },
     "momus": {
-      "model": "zhipuai-coding-plan/glm-5",
+      "model": "openai/gpt-5.2",
       "variant": "xhigh"
     }
   },
