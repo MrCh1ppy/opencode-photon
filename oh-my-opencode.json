@@ -24,8 +24,12 @@
     "quick": {
       "model": "minimax-cn-coding-plan/MiniMax-M2.5-highspeed"
     },
-    "unspecified-low": {
+    "deep": {
       "model": "openai/gpt-5.3-codex",
+      "variant": "medium"
+    },
+    "unspecified-low": {
+      "model": "zhipuai-coding-plan/glm-5",
       "variant": "medium"
     },
     "unspecified-high": {
@@ -35,12 +39,12 @@
   },
   "agents": {
     "sisyphus": {
-      "model": "openai/gpt-5.3-codex",
+      "model": "zhipuai-coding-plan/glm-5",
       "temperature": 0.2,
       "variant": "xhigh"
     },
     "sisyphus-junior": {
-      "model": "openai/gpt-5.3-codex",
+      "model": "zhipuai-coding-plan/glm-5",
       "temperature": 0.2,
       "variant": "xhigh"
     },
@@ -55,7 +59,7 @@
       "variant": "high"
     },
     "atlas": {
-      "model": "openai/gpt-5.3-codex",
+      "model": "zhipuai-coding-plan/glm-5",
       "temperature": 0.2
     },
     "oracle": {
