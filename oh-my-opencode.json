@@ -58,7 +58,7 @@
       "variant": "high"
     },
     "atlas": {
-      "model": "openai/gpt-5.4",
+      "model": "zhipuai-coding-plan/glm-5",
       "temperature": 0.2
     },
     "oracle": {
