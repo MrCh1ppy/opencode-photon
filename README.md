@@ -1,127 +1,81 @@
 # opencode-photon
 
-A lightweight orchestration control layer for OpenCode that separates runtime state management from orchestration intelligence.
-
-## v0: Config-Only Prototype
-
-This version is **pure configuration** — no plugin code. It uses OpenCode's native agent system to validate the core hypothesis:
-
-> Can a cheap Dispatcher gateway + session-reused Judge replace an expensive general-purpose Orchestrator?
+A configuration-only orchestration layer for OpenCode. The active architecture uses a primary Dispatcher, an advisory Judge, and bounded specialist agents.
 
 ## Architecture
 
-```
+```text
 User
-  ↓
-Dispatcher (primary) — permission-enforced gateway, can ONLY call judge
-  ↓ task (exactly once per user request)
-Judge (subagent) — orchestration brain, owns the delegation loop
-  ↓ task (directly, results return to Judge)
-Specialists — bounded execution
-  ├── explorer      (codebase search — first when location unknown)
-  ├── oracle        (architecture/hard problems — before deep work)
-  ├── low-fixer     (mechanical, low-risk, reversible)
-  ├── medium-fixer  (bounded scope, known patterns)
-  └── deep-fixer    (approved architecture, cross-system)
-  ↓
-Judge reconciles results → terminal JSON → Dispatcher relays user_message
+  |
+  v
+Dispatcher (primary)
+  |
+  +-- Judge (advisory coordinator)
+  |
+  +-- explore -> Explorer
+  +-- oracle -> Oracle
+  +-- low-fixer
+  +-- medium-fixer
+  +-- deep-fixer
 ```
 
-**Key property**: Dispatcher has task permission only for `judge`. Judge-first sequencing is **permission-enforced**, not prompt discipline.
+The Dispatcher is the only user-facing agent. It has `edit: allow` and `bash: allow`. Its `task` permission starts with the broad rule `"*": deny`, followed by specific allows for `judge`, `explore`, `oracle`, `low-fixer`, `medium-fixer`, and `deep-fixer`. This ordering keeps delegation restricted to the approved workflow.
 
 ## Agents
 
-| Agent | Mode | Role | Permissions |
-|-------|------|------|-------------|
-| `dispatcher` | primary | Gateway: receive input, call judge once, relay report | task:judge only |
-| `judge` | subagent | Orchestration brain, owns delegation loop | task: all specialists |
-| `explorer` | subagent | Fast codebase search | read-only |
-| `oracle` | subagent | Architecture decisions, hard problems | read-only |
-| `low-fixer` | subagent | Mechanical, low-risk changes | edit only |
-| `medium-fixer` | subagent | Bounded implementation, known patterns | edit, bash |
-| `deep-fixer` | subagent | Approved architecture implementation | edit, bash |
+| Agent | Mode | Model | Responsibility |
+| --- | --- | --- | --- |
+| `dispatcher` | primary | `deepseek/deepseek-v4-flash` | Receives requests, follows Judge routing, invokes specialists, and reports evidence. |
+| `judge` | subagent | `openai/gpt-5.6-terra` | Advisory coordinator. It must not delegate, edit files, or run shell commands. |
+| `explorer` | subagent | `deepseek/deepseek-v4-flash` | Read-only codebase search and pattern discovery. It is invoked through the `explore` task route. |
+| `oracle` | subagent | `openai/gpt-5.6-sol` | Read-only advisor for unclear architecture, root causes, security, or data-integrity concerns. |
+| `low-fixer` | subagent | `deepseek/deepseek-v4-flash` | Executes simple, mechanical, low-risk changes. It has `bash: allow`. |
+| `medium-fixer` | subagent | `openai/gpt-5.6-terra` | Executes bounded multi-file changes following approved patterns. |
+| `deep-fixer` | subagent | `openai/gpt-5.6-sol` | Executes approved complex or cross-system implementation work. |
 
-## Judge Session Model
+## Judge Loop
 
-Within one task lifecycle, **one Judge session is reused** across the whole delegation loop:
+1. The Dispatcher calls Judge before specialist work and passes any existing `resume_state`.
+2. Judge returns routing guidance, constraints, acceptance criteria, and stop conditions.
+3. The Dispatcher calls one permitted specialist according to that guidance.
+4. The Dispatcher summarizes affected files, changes, failures, and validation evidence to Judge.
+5. Judge provides the next action. The Dispatcher preserves and passes `resume_state` on every loop turn.
+6. The loop ends when Judge reports `complete`, `stopped`, or `blocked`, or when the user terminates it.
 
-- Specialist results return directly to Judge — no re-serialization of state
-- Judge maintains an internal **evidence ledger**: goal, facts (with provenance), hypotheses (separate from facts), decisions (with superseded IDs), files touched, validation evidence, failures, open questions, plan
-- Every terminal response includes a compact `resume_state` — the fallback when native session continuation is unavailable across user turns
+Judge is advisory and never delegates directly. The Dispatcher owns specialist invocation and result collection.
 
-## Routing Gates (Judge)
+## Configuration
 
-Specialists selected by **risk, uncertainty, and blast radius** — never by file/line count:
+`photon.json` sets `dispatcher` as the default agent and injects `~/.config/opencode/language.md` through the `instructions` field. The language directive requires Simplified Chinese for user-facing communication while keeping code, identifiers, paths, and configuration content in their original form.
 
-1. **Location unknown?** → `explorer`
-2. **Approach unclear?** (architecture, root cause, security/data, conflicting evidence) → `oracle`
-3. **Risk assessment:**
-   - Low risk, reversible, exact instructions → `low-fixer`
-   - Bounded scope, known pattern → `medium-fixer`
-   - High risk, cross-system, irreversible → `deep-fixer`
-
-**Budget limits**: max 2 retries per delegation, max 8 total specialist calls, max 3 mutating calls without user confirmation. Mutating specialists are serialized.
-
-## Oracle vs Judge
-
-Judge coordinates; Oracle solves. Oracle is **mandatory** for irreversible decisions, security/data integrity, conflicting evidence, and unclear root cause — and **forbidden** for ordinary tier selection or mechanical failures. Default: one Oracle call per unresolved issue.
-
-## Contracts
-
-### Judge Terminal Response (to Dispatcher)
+Provider credentials in `opencode.json` are read from environment variables through these references:
 
 ```json
 {
-  "status": "complete|partial|needs_input|blocked|stopped",
-  "user_message": "final user-facing report or question",
-  "changes": [],
-  "validation": [],
-  "risks": [],
-  "execution_summary": {"delegations": 0, "retries": 0, "oracle_calls": 0},
-  "resume_state": {}
+  "apiKey": "{env:KIMI_FOR_CODING_API_KEY}"
 }
 ```
-
-### Specialist Result (to Judge)
 
 ```json
 {
-  "status": "success|partial|failed|escalate|too-complex|needs-oracle",
-  "files_touched": [],
-  "changes_made": "...",
-  "scope_violation": false,
-  "commands_run": [],
-  "validation": "...",
-  "blocker_kind": null,
-  "recommended_next_action": "accept|retry|escalate|ask-oracle|rollback"
+  "apiKey": "{env:OPENAI_API_KEY}"
 }
 ```
+
+Set the corresponding environment variables before using models from those providers. Never commit their values.
 
 ## Usage
 
 ```bash
-git clone git@github.com:MrCh1ppy/opencode-photon.git
 cd opencode-photon
 opencode
 ```
 
-`default_agent` is `dispatcher` — describe your task; Judge orchestrates automatically.
+Describe the task to the Dispatcher. It routes the work through Judge and the appropriate risk-tiered specialist.
 
-## What v0 Validates
+## Scope
 
-- Permission-enforced judge-first sequencing works via config alone
-- Judge can own the full delegation loop with session reuse
-- Risk-based tier routing reduces cost vs. one-size-fits-all
-- JSON contracts are stable enough for machine-checked orchestration
-
-## Known Limitations (v1+ plugin runtime)
-
-- Judge session reuse grows context monotonically within a task — no canonical state store yet
-- `resume_state` handoff across user turns depends on platform subagent-resume semantics (unverified)
-- No independent verification of specialist self-reported results (Judge has no read/bash)
-- `edit: allow` / `bash: allow` cannot enforce file-count or command scope — prompt-level only
-- No model/cost differentiation between tiers yet (assign per-tier models in `opencode.json`)
-- No cost tracking or event-gated Judge triggering
+This repository validates the orchestration workflow through native OpenCode configuration. Runtime behavior such as provider authentication and session continuation depends on the running OpenCode version and environment.
 
 ## License
 
