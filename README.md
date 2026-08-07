@@ -6,63 +6,83 @@ A lightweight orchestration control layer for OpenCode that separates runtime st
 
 This version is **pure configuration** — no plugin code. It uses OpenCode's native agent system to validate the core hypothesis:
 
-> Can a cheap Dispatcher + stateless Judge replace an expensive stateful Orchestrator?
+> Can a cheap Dispatcher gateway + session-reused Judge replace an expensive general-purpose Orchestrator?
 
 ## Architecture
 
 ```
 User
   ↓
-Dispatcher (primary) — receives input, always consults Judge first
-  ↓ task
-Judge (subagent) — analyzes state, outputs structured JSON decisions
-  ↓ task (via Dispatcher)
+Dispatcher (primary) — permission-enforced gateway, can ONLY call judge
+  ↓ task (exactly once per user request)
+Judge (subagent) — orchestration brain, owns the delegation loop
+  ↓ task (directly, results return to Judge)
 Specialists — bounded execution
-  ├── explorer      (codebase search — first when context unknown)
-  ├── oracle        (architecture/ hard problems — before deep work)
+  ├── explorer      (codebase search — first when location unknown)
+  ├── oracle        (architecture/hard problems — before deep work)
   ├── low-fixer     (mechanical, low-risk, reversible)
   ├── medium-fixer  (bounded scope, known patterns)
   └── deep-fixer    (approved architecture, cross-system)
-  ↓ JSON result
-Dispatcher
-  ↓ task
-Judge — next decision
   ↓
-... loop until COMPLETE
+Judge reconciles results → terminal JSON → Dispatcher relays user_message
 ```
+
+**Key property**: Dispatcher has task permission only for `judge`. Judge-first sequencing is **permission-enforced**, not prompt discipline.
 
 ## Agents
 
 | Agent | Mode | Role | Permissions |
 |-------|------|------|-------------|
-| `dispatcher` | primary | User-facing runtime, executes Judge decisions | task only |
-| `judge` | subagent | Orchestration brain, outputs JSON decisions | none |
+| `dispatcher` | primary | Gateway: receive input, call judge once, relay report | task:judge only |
+| `judge` | subagent | Orchestration brain, owns delegation loop | task: all specialists |
 | `explorer` | subagent | Fast codebase search | read-only |
 | `oracle` | subagent | Architecture decisions, hard problems | read-only |
 | `low-fixer` | subagent | Mechanical, low-risk changes | edit only |
 | `medium-fixer` | subagent | Bounded implementation, known patterns | edit, bash |
 | `deep-fixer` | subagent | Approved architecture implementation | edit, bash |
 
+## Judge Session Model
+
+Within one task lifecycle, **one Judge session is reused** across the whole delegation loop:
+
+- Specialist results return directly to Judge — no re-serialization of state
+- Judge maintains an internal **evidence ledger**: goal, facts (with provenance), hypotheses (separate from facts), decisions (with superseded IDs), files touched, validation evidence, failures, open questions, plan
+- Every terminal response includes a compact `resume_state` — the fallback when native session continuation is unavailable across user turns
+
 ## Routing Gates (Judge)
 
-Specialists are selected by **risk, uncertainty, and blast radius** — never by file/line count:
+Specialists selected by **risk, uncertainty, and blast radius** — never by file/line count:
 
 1. **Location unknown?** → `explorer`
-2. **Approach unclear?** (architecture, root cause, security/data) → `oracle`
+2. **Approach unclear?** (architecture, root cause, security/data, conflicting evidence) → `oracle`
 3. **Risk assessment:**
    - Low risk, reversible, exact instructions → `low-fixer`
    - Bounded scope, known pattern → `medium-fixer`
    - High risk, cross-system, irreversible → `deep-fixer`
 
-**Escalation after failure:**
-- Transient/tool error → retry same tier (max 2 retries)
-- Scope underestimated → escalate one tier
-- Wrong approach → `oracle` for redesign
-- Security, migrations, public APIs, data integrity → always high-risk
+**Budget limits**: max 2 retries per delegation, max 8 total specialist calls, max 3 mutating calls without user confirmation. Mutating specialists are serialized.
 
-## Specialist Output Contract
+## Oracle vs Judge
 
-All specialists return structured JSON:
+Judge coordinates; Oracle solves. Oracle is **mandatory** for irreversible decisions, security/data integrity, conflicting evidence, and unclear root cause — and **forbidden** for ordinary tier selection or mechanical failures. Default: one Oracle call per unresolved issue.
+
+## Contracts
+
+### Judge Terminal Response (to Dispatcher)
+
+```json
+{
+  "status": "complete|partial|needs_input|blocked|stopped",
+  "user_message": "final user-facing report or question",
+  "changes": [],
+  "validation": [],
+  "risks": [],
+  "execution_summary": {"delegations": 0, "retries": 0, "oracle_calls": 0},
+  "resume_state": {}
+}
+```
+
+### Specialist Result (to Judge)
 
 ```json
 {
@@ -77,24 +97,6 @@ All specialists return structured JSON:
 }
 ```
 
-## Judge Output Schema
-
-```json
-{
-  "assessment": "Brief state analysis",
-  "decision": "CONTINUE|DELEGATE|RETRY|REPLAN|ROLLBACK|WAIT|VERIFY|ASK_ORACLE|STOP|COMPLETE",
-  "actions": [{"type": "delegate", "agent": "...", "prompt": "..."}],
-  "state_patch": {
-    "facts_add": [],
-    "decisions_add": [],
-    "obsolete_add": [],
-    "failures_add": [],
-    "retry_count": 0
-  },
-  "user_message": "optional"
-}
-```
-
 ## Usage
 
 ```bash
@@ -103,23 +105,23 @@ cd opencode-photon
 opencode
 ```
 
-`default_agent` is `dispatcher` — describe your task and routing happens automatically.
+`default_agent` is `dispatcher` — describe your task; Judge orchestrates automatically.
 
 ## What v0 Validates
 
-- Judge can reliably route via explicit gates
-- Tiered fixer dispatch reduces cost vs. one-size-fits-all
-- JSON output contracts are stable enough for orchestration
-- Permission isolation works via config
+- Permission-enforced judge-first sequencing works via config alone
+- Judge can own the full delegation loop with session reuse
+- Risk-based tier routing reduces cost vs. one-size-fits-all
+- JSON contracts are stable enough for machine-checked orchestration
 
 ## Known Limitations (v1+ plugin runtime)
 
-- "Judge-first" sequencing is prompt-enforced, not permission-enforced — Dispatcher has task access to all specialists, discipline comes from its prompt
-- No persistent canonical state (prompt/todo only)
-- No state patch validation
+- Judge session reuse grows context monotonically within a task — no canonical state store yet
+- `resume_state` handoff across user turns depends on platform subagent-resume semantics (unverified)
+- No independent verification of specialist self-reported results (Judge has no read/bash)
+- `edit: allow` / `bash: allow` cannot enforce file-count or command scope — prompt-level only
+- No model/cost differentiation between tiers yet (assign per-tier models in `opencode.json`)
 - No cost tracking or event-gated Judge triggering
-- `edit: allow` cannot enforce file-count scope; bash is unrestricted within each agent
-- No model/cost differentiation between tiers yet (assign cheaper models per tier in `opencode.json`)
 
 ## License
 

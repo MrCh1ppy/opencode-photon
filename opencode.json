@@ -4,23 +4,23 @@
   "agent": {
     "dispatcher": {
       "mode": "primary",
-      "description": "Entry point for all user requests. Routes to judge for orchestration decisions."
+      "description": "User-facing gateway. Calls judge once per request, relays final report. Cannot call specialists."
     },
     "judge": {
       "mode": "subagent",
-      "description": "Orchestration decision maker. Analyzes state and outputs structured actions."
+      "description": "Orchestration brain. Owns delegation loop, calls specialists directly, returns terminal JSON."
     },
     "low-fixer": {
       "mode": "subagent",
-      "description": "Simple, single-file changes: typos, config edits, mechanical replacements."
+      "description": "Simple, low-risk, reversible changes with exact instructions."
     },
     "medium-fixer": {
       "mode": "subagent",
-      "description": "Multi-file changes with clear scope, standard refactoring, test updates."
+      "description": "Bounded implementation following existing patterns. Runs validation."
     },
     "deep-fixer": {
       "mode": "subagent",
-      "description": "Complex implementation, architectural changes, cross-system refactoring."
+      "description": "Complex implementation of approved architecture. Cross-system changes."
     },
     "explorer": {
       "mode": "subagent",
@@ -28,7 +28,7 @@
     },
     "oracle": {
       "mode": "subagent",
-      "description": "Solves hard architectural and debugging problems."
+      "description": "Hard problem solver. Architecture decisions, unclear root cause, security concerns."
     }
   }
 }
