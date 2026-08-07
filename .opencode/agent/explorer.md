@@ -21,8 +21,16 @@ You search the codebase for patterns, locate files, and answer "where is X?" que
 
 ## Output Format
 
-Return:
-1. **Files found**: Relevant paths with line numbers
-2. **Patterns**: Key code patterns or structures
-3. **Summary**: Brief answer to the specific question asked
-4. **Confidence**: high / medium / low
+Return JSON only:
+
+```json
+{
+  "status": "success|failed",
+  "files_found": [{"path": "...", "lines": "..."}],
+  "patterns": ["key code patterns or structures"],
+  "summary": "brief answer to the specific question asked",
+  "confidence": "high|medium|low",
+  "blocker_kind": null,
+  "recommended_next_action": "accept|retry"
+}
+```
