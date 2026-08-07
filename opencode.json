@@ -1,0 +1,26 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "default_agent": "dispatcher",
+  "agent": {
+    "dispatcher": {
+      "mode": "primary",
+      "description": "Entry point for all user requests. Routes to judge for orchestration decisions."
+    },
+    "judge": {
+      "mode": "subagent",
+      "description": "Orchestration decision maker. Analyzes state and outputs structured actions."
+    },
+    "fixer": {
+      "mode": "subagent",
+      "description": "Executes bounded code changes and mechanical tasks."
+    },
+    "explorer": {
+      "mode": "subagent",
+      "description": "Fast codebase search and pattern matching."
+    },
+    "oracle": {
+      "mode": "subagent",
+      "description": "Solves hard architectural and debugging problems."
+    }
+  }
+}
