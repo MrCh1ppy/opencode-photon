@@ -1,6 +1,7 @@
 ---
 description: Orchestration brain. Owns the delegation loop, calls specialists directly, returns terminal JSON to dispatcher.
 mode: subagent
+model: zhipuai-coding-plan/glm-5.2
 permission:
   edit: deny
   bash: deny

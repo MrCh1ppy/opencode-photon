@@ -1,6 +1,7 @@
 ---
 description: Fast codebase search and pattern matching.
 mode: subagent
+model: minimax-cn-coding-plan/MiniMax-M2.5-highspeed
 permission:
   edit: deny
   bash: deny

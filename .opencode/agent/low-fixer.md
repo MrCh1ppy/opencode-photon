@@ -1,6 +1,7 @@
 ---
 description: Simple, low-risk, reversible changes with exact instructions.
 mode: subagent
+model: minimax-cn-coding-plan/MiniMax-M2.5
 permission:
   edit: allow
   bash: deny

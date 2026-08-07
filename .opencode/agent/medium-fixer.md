@@ -1,6 +1,7 @@
 ---
 description: Multi-file changes with clear scope, standard refactoring, test updates.
 mode: subagent
+model: zhipuai-coding-plan/glm-5.1
 permission:
   edit: allow
   bash: allow

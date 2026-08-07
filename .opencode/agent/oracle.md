@@ -1,6 +1,7 @@
 ---
 description: Solves hard architectural and debugging problems.
 mode: subagent
+model: kimi-for-coding/k3-256k
 permission:
   edit: deny
   bash: deny

@@ -1,6 +1,7 @@
 ---
 description: User-facing gateway. Receives input, calls judge exactly once per request, relays final report.
 mode: primary
+model: minimax-cn-coding-plan/MiniMax-M2.5-highspeed
 permission:
   edit: deny
   bash: deny

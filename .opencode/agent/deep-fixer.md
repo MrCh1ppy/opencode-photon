@@ -1,6 +1,7 @@
 ---
 description: Complex implementation of approved architecture, cross-system changes, migrations.
 mode: subagent
+model: kimi-for-coding/k3
 permission:
   edit: allow
   bash: allow
