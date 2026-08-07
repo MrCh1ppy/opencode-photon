@@ -17,7 +17,12 @@ Dispatcher (primary) — receives input, routes to Judge
   ↓ task
 Judge (subagent) — analyzes state, outputs structured decisions
   ↓ task
-Specialists (fixer / explorer / oracle) — bounded execution
+Specialists — bounded execution
+  ├── low-fixer     (simple, single-file)
+  ├── medium-fixer  (multi-file, clear scope)
+  ├── deep-fixer    (complex, architectural)
+  ├── explorer      (codebase search)
+  └── oracle        (hard problems)
   ↓ result
 Dispatcher
   ↓ task
@@ -32,9 +37,23 @@ Judge — next decision
 |-------|------|------|-------------|
 | `dispatcher` | primary | User-facing runtime, routes to Judge | task:judge only |
 | `judge` | subagent | Orchestration brain, outputs JSON decisions | none |
-| `fixer` | subagent | Bounded code changes | edit, bash |
+| `low-fixer` | subagent | Simple, single-file changes | edit only |
+| `medium-fixer` | subagent | Multi-file, standard patterns | edit, bash |
+| `deep-fixer` | subagent | Complex, architectural changes | edit, bash |
 | `explorer` | subagent | Fast codebase search | read-only |
 | `oracle` | subagent | Hard problem solving | read-only |
+
+## Fixer Tier Selection
+
+Judge selects the **lowest sufficient tier** to minimize cost:
+
+| Tier | Scope | Examples | Cost |
+|------|-------|----------|------|
+| `low-fixer` | 1 file, <20 lines | Typo, config value, simple rename | Lowest |
+| `medium-fixer` | 2-5 files, clear pattern | Feature impl, test updates, moderate refactor | Medium |
+| `deep-fixer` | Architectural, cross-system | Migration, API redesign, performance | Highest |
+
+Escalation: if a fixer fails or reports complexity beyond its tier, Judge retries with next tier up.
 
 ## Usage
 
@@ -51,10 +70,11 @@ Then describe your task. The Dispatcher will route through Judge automatically.
 
 ## What v0 Validates
 
-- Judge can reliably select next action
+- Judge can reliably select next action and appropriate fixer tier
 - Permission isolation works via config
 - Delegation prompt quality is maintained
 - Judge output protocol is stable
+- Cost optimization through tiered fixer dispatch
 
 ## What v0 Does NOT Have
 
@@ -72,7 +92,7 @@ These require the plugin runtime in v1+.
 {
   "assessment": "Brief state analysis",
   "decision": "CONTINUE|DELEGATE|RETRY|REPLAN|ROLLBACK|WAIT|VERIFY|ASK_ORACLE|STOP|COMPLETE",
-  "actions": [{"type": "delegate", "agent": "fixer|explorer|oracle", "prompt": "..."}],
+  "actions": [{"type": "delegate", "agent": "low-fixer|medium-fixer|deep-fixer|explorer|oracle", "prompt": "..."}],
   "state_patch": {
     "facts_add": [],
     "decisions_add": [],

@@ -10,9 +10,17 @@
       "mode": "subagent",
       "description": "Orchestration decision maker. Analyzes state and outputs structured actions."
     },
-    "fixer": {
+    "low-fixer": {
       "mode": "subagent",
-      "description": "Executes bounded code changes and mechanical tasks."
+      "description": "Simple, single-file changes: typos, config edits, mechanical replacements."
+    },
+    "medium-fixer": {
+      "mode": "subagent",
+      "description": "Multi-file changes with clear scope, standard refactoring, test updates."
+    },
+    "deep-fixer": {
+      "mode": "subagent",
+      "description": "Complex implementation, architectural changes, cross-system refactoring."
     },
     "explorer": {
       "mode": "subagent",

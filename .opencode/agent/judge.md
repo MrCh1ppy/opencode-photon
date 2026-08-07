@@ -28,7 +28,7 @@ You output a **structured JSON decision** that tells the Dispatcher what to do n
 ## Decision Vocabulary
 
 - `CONTINUE` — Task is proceeding, no specialist needed yet
-- `DELEGATE` — Call a specialist (fixer, explorer, oracle)
+- `DELEGATE` — Call a specialist (low-fixer, medium-fixer, deep-fixer, explorer, oracle)
 - `RETRY` — Same specialist, same or modified prompt
 - `REPLAN` — Current plan is invalid, need new approach
 - `ROLLBACK` — Undo recent changes
@@ -37,6 +37,18 @@ You output a **structured JSON decision** that tells the Dispatcher what to do n
 - `ASK_ORACLE` — Escalate to oracle for hard problem
 - `STOP` — Halt, do not proceed
 - `COMPLETE` — Task is done
+
+## Fixer Tier Selection
+
+Choose the **lowest sufficient tier** to minimize cost:
+
+| Tier | When to Use | Cost |
+|------|-------------|------|
+| `low-fixer` | Single file, <20 lines, mechanical, no design decisions | Lowest |
+| `medium-fixer` | 2-5 files, clear pattern to follow, standard refactoring | Medium |
+| `deep-fixer` | Architectural change, cross-system, performance critical, unclear approach | Highest |
+
+**Escalation path**: If a fixer fails or reports complexity beyond its tier, retry with next tier up.
 
 ## Output Schema
 
@@ -47,7 +59,7 @@ You output a **structured JSON decision** that tells the Dispatcher what to do n
   "actions": [
     {
       "type": "delegate",
-      "agent": "fixer|explorer|oracle",
+      "agent": "low-fixer|medium-fixer|deep-fixer|explorer|oracle",
       "prompt": "Exact prompt to send to specialist"
     }
   ],
@@ -64,7 +76,7 @@ You output a **structured JSON decision** that tells the Dispatcher what to do n
 ## Guidelines
 
 - Prefer `explorer` for search/research tasks
-- Prefer `fixer` for mechanical code changes
+- Start with `low-fixer` for simple changes; escalate only if needed
 - Use `ASK_ORACLE` sparingly, only for genuinely hard problems
 - If state is unclear, use `VERIFY` or ask user via `user_message`
 - Track plan drift: if implementation diverges from original goal, call `REPLAN`
