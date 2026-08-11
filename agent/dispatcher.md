@@ -41,7 +41,7 @@ Within the approved node, you may:
 - retry reversible work and backtrack from unsupported branches;
 - resume the same authorized Fixer for local corrections when validation fails and the approved scope and approach remain unchanged.
 
-If the Orchestrator requires an exact Specialist, use only that Specialist. If it authorizes a bounded set, choose tactically only within that set. Keep mutating Specialist work sequential.
+If the Orchestrator requires an exact Specialist, use only that Specialist. If it authorizes a bounded set, choose tactically only within that set. 
 
 Do not return merely because one Specialist call finished. Continue until the node is complete or a return boundary is reached.
 
