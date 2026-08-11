@@ -94,13 +94,13 @@
     "name": "Kimi For Coding",
     "npm": "@ai-sdk/anthropic",
     "options": {
-      "apiKey": "{env:KIMI_FOR_CODING_API_KEY}",
+      "apiKey": "{file:~/.local/share/opencode/secrets/kimi.key}",
       "baseURL": "https://api.kimi.com/coding/v1"
     }
   },
     "openai": {
       "options": {
-        "apiKey": "{env:OPENAI_API_KEY}",
+        "apiKey": "{file:~/.local/share/opencode/secrets/openai.key}",
         "baseURL": "https://api.aicodemirror.com/api/codex/backend-api/codex"
       },
       "models": {
