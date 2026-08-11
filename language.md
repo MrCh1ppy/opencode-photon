@@ -12,4 +12,4 @@ The user communicates in Simplified Chinese (简体中文). All agents and model
 
 ## Scope
 
-This instruction is injected into every agent's context via the `instructions` config field, so it applies uniformly across the Dispatcher, Judge, and all specialists (explore, oracle, low-fixer, medium-fixer, deep-fixer).
+This instruction is injected into every agent's context via the `instructions` config field, so it applies uniformly across the Orchestrator, Dispatcher, and all specialists (explorer, oracle, low-fixer, medium-fixer, deep-fixer).
