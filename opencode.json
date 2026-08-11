@@ -1,7 +1,5 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "default_agent": "dispatcher",
-  "instructions": ["~/.config/opencode/language.md"],
   "provider": {
     "kimi-for-coding": {
       "models": {
@@ -96,13 +94,13 @@
     "name": "Kimi For Coding",
     "npm": "@ai-sdk/anthropic",
     "options": {
-      "apiKey": "{file:~/.local/share/opencode/secrets/kimi.key}",
+      "apiKey": "{env:KIMI_FOR_CODING_API_KEY}",
       "baseURL": "https://api.kimi.com/coding/v1"
     }
   },
     "openai": {
       "options": {
-        "apiKey": "{file:~/.local/share/opencode/secrets/openai.key}",
+        "apiKey": "{env:OPENAI_API_KEY}",
         "baseURL": "https://api.aicodemirror.com/api/codex/backend-api/codex"
       },
       "models": {
