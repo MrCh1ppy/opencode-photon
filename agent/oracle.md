@@ -4,7 +4,8 @@ mode: subagent
 model: openai/gpt-5.6-sol
 permission:
   edit: deny
-  bash: deny
+  bash: allow
+  external_directory: ask
   task: deny
 ---
 
@@ -36,19 +37,49 @@ You receive:
 
 ## Output Format
 
-Return JSON only:
+Return one Readable Markdown Handoff. The final user-facing report is always in Simplified Chinese, although this analysis is internal guidance. Use `- None` for an empty list.
 
-```json
-{
-  "status": "success|insufficient-context",
-  "root_cause": "what is actually happening",
-  "options": [
-    {"approach": "...", "trade_offs": "..."}
-  ],
-  "recommendation": "which option and why",
-  "risks": "what could go wrong",
-  "next_steps": ["specific actions for the Judge to delegate"],
-  "blocker_kind": null,
-  "recommended_next_action": "accept|retry"
-}
-```
+## Status
+status: <success|partial|failed|escalated>
+
+## Summary
+<One-sentence architectural conclusion.>
+
+## Root Cause
+<What is actually happening.>
+
+## Options
+### Option 1
+Approach: <Proposed approach.>
+Trade-offs: <Relevant trade-offs.>
+
+## Recommendation
+<Which option and why.>
+
+## Next Steps
+- <Specific action for Judge to delegate.>
+- None
+
+## Risks
+- <What could go wrong.>
+- None
+
+## Evidence
+- <Key reasoning evidence.>
+- None
+
+## Files
+- `path/to/file`: <Relevant file and why it matters.>
+- None
+
+## Validation
+- none (read-only)
+
+## Blocker
+blocker_kind: <none|user_input_required|environment|dependency|test_failure|data_integrity|security|unknown>
+<Explanation, or None.>
+
+## Next Action
+recommended_next_action: <accept|retry|escalate>
+escalation_target: <judge|oracle|low-fixer|medium-fixer|deep-fixer|user|none>
+<Recommended next step.>

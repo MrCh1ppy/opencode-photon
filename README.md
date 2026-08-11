@@ -12,14 +12,14 @@ Dispatcher (primary)
   |
   +-- Judge (advisory coordinator)
   |
-  +-- explore -> Explorer
+  +-- explorer -> Explorer
   +-- oracle -> Oracle
   +-- low-fixer
   +-- medium-fixer
   +-- deep-fixer
 ```
 
-The Dispatcher is the only user-facing agent. It has `edit: allow` and `bash: allow`. Its `task` permission starts with the broad rule `"*": deny`, followed by specific allows for `judge`, `explore`, `oracle`, `low-fixer`, `medium-fixer`, and `deep-fixer`. This ordering keeps delegation restricted to the approved workflow.
+The Dispatcher is the only user-facing agent. It has `edit: allow` and `bash: allow`. Its `task` permission starts with the broad rule `"*": deny`, followed by specific allows for `judge`, `explorer`, `oracle`, `low-fixer`, `medium-fixer`, and `deep-fixer`. This ordering keeps delegation restricted to the approved workflow.
 
 ## Agents
 
@@ -27,7 +27,7 @@ The Dispatcher is the only user-facing agent. It has `edit: allow` and `bash: al
 | --- | --- | --- | --- |
 | `dispatcher` | primary | `deepseek/deepseek-v4-flash` | Receives requests, follows Judge routing, invokes specialists, and reports evidence. |
 | `judge` | subagent | `openai/gpt-5.6-terra` | Advisory coordinator. It must not delegate, edit files, or run shell commands. |
-| `explorer` | subagent | `deepseek/deepseek-v4-flash` | Read-only codebase search and pattern discovery. It is invoked through the `explore` task route. |
+| `explorer` | subagent | `deepseek/deepseek-v4-flash` | Read-only codebase search and pattern discovery. It is invoked through the `explorer` task route. |
 | `oracle` | subagent | `openai/gpt-5.6-sol` | Read-only advisor for unclear architecture, root causes, security, or data-integrity concerns. |
 | `low-fixer` | subagent | `deepseek/deepseek-v4-flash` | Executes simple, mechanical, low-risk changes. It has `bash: allow`. |
 | `medium-fixer` | subagent | `openai/gpt-5.6-terra` | Executes bounded multi-file changes following approved patterns. |

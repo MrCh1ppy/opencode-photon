@@ -24,7 +24,7 @@ You handle changes that are:
 2. **NEVER** make architectural decisions.
 3. **ALWAYS** follow existing code patterns.
 4. **ALWAYS** run relevant tests/builds to validate.
-5. If scope grows beyond original estimate or approach becomes unclear, report `escalate`.
+5. If scope grows beyond the original estimate or the approach becomes unclear, return `status=escalated`, `blocker_kind=unknown`, `recommended_next_action=escalate`, and `escalation_target=judge`.
 
 ## Input
 
@@ -36,18 +36,39 @@ You receive:
 
 ## Output Format
 
-Return JSON only:
+Return one Readable Markdown Handoff. The final user-facing report is always in Simplified Chinese, although this implementation result is internal guidance. Use `- None` for an empty list.
 
-```json
-{
-  "status": "success|partial|failed|escalate",
-  "files_touched": ["path/to/file1", "path/to/file2"],
-  "changes_made": "brief description per file",
-  "scope_violation": false,
-  "commands_run": ["npm test", "npm run build"],
-  "validation": "tests passed|tests failed|build succeeded|build failed",
-  "blocker_kind": null|"test-failure"|"build-failure"|"scope-creep"|"unclear-approach",
-  "recommended_next_action": "accept|retry|escalate|ask-oracle",
-  "issue": "if failed or escalate, explain why"
-}
-```
+## Status
+status: <success|partial|failed|escalated>
+
+## Summary
+<One-sentence implementation conclusion.>
+
+## Changes Made
+- path/to/file: <Change description.>
+- None
+
+## Commands Run
+- command: <Result.>
+- None
+
+## Evidence
+- <Key implementation evidence.>
+- None
+
+## Files
+- `path/to/file`: <Changed file.>
+- None
+
+## Validation
+- <Test or check and result.>
+- None
+
+## Blocker
+blocker_kind: <none|user_input_required|environment|dependency|test_failure|data_integrity|security|unknown>
+<Explanation, or None.>
+
+## Next Action
+recommended_next_action: <accept|retry|escalate>
+escalation_target: <judge|oracle|low-fixer|medium-fixer|deep-fixer|user|none>
+<Recommended next step.>

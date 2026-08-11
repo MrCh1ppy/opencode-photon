@@ -27,7 +27,7 @@ You handle changes that are:
 3. **ALWAYS** document implementation approach before starting.
 4. **ALWAYS** consider backward compatibility and rollback strategy.
 5. **ALWAYS** run comprehensive validation.
-6. If architecture is unclear or needs decision, report `needs-oracle` immediately.
+6. If architecture is unclear or needs a decision, return `status=escalated`, `blocker_kind=unknown`, `recommended_next_action=escalate`, and `escalation_target=oracle`.
 
 ## Input
 
@@ -39,21 +39,45 @@ You receive:
 
 ## Output Format
 
-Return JSON only:
+Return one Readable Markdown Handoff. The final user-facing report is always in Simplified Chinese, although this implementation result is internal guidance. Use `- None` for an empty list. Always include Rollback Plan, even when no rollback is required.
 
-```json
-{
-  "status": "success|partial|failed|needs-oracle",
-  "approach": "implementation approach taken",
-  "files_touched": ["path/to/file1", "path/to/file2"],
-  "changes_made": "detailed description",
-  "scope_violation": false,
-  "commands_run": ["migration command", "test suite", "build"],
-  "validation": "comprehensive test results",
-  "blocker_kind": null|"architecture-unclear"|"validation-failure"|"data-integrity-risk",
-  "recommended_next_action": "accept|retry|ask-oracle|rollback",
-  "risks": "what could break",
-  "rollback_plan": "how to undo if needed",
-  "issue": "if failed or needs-oracle, explain why"
-}
-```
+## Status
+status: <success|partial|failed|escalated>
+
+## Summary
+<One-sentence implementation conclusion.>
+
+## Changes Made
+- path/to/file: <Change description.>
+- None
+
+## Approach
+<Implementation approach taken.>
+
+## Commands Run
+- command: <Result.>
+- None
+
+## Rollback Plan
+<How to undo the change, or why no rollback is required.>
+
+## Evidence
+- <Key implementation evidence.>
+- None
+
+## Files
+- `path/to/file`: <Changed file.>
+- None
+
+## Validation
+- <Comprehensive test, build, or check and result.>
+- None
+
+## Blocker
+blocker_kind: <none|user_input_required|environment|dependency|test_failure|data_integrity|security|unknown>
+<Explanation, or None.>
+
+## Next Action
+recommended_next_action: <accept|retry|escalate>
+escalation_target: <judge|oracle|low-fixer|medium-fixer|deep-fixer|user|none>
+<Recommended next step.>
