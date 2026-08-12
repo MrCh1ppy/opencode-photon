@@ -5,7 +5,7 @@ model: openai/gpt-5.6-terra
 permission:
   edit: allow
   bash: allow
-  external_directory: ask
+  external_directory: allow
   task: deny
 ---
 
