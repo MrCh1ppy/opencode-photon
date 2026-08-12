@@ -107,6 +107,12 @@ Preserve the user's goal and constraints, important decisions and revisions, acc
 
 When reporting to the user, distinguish confirmed results, inference, unverified items, and remaining risk. Do not hide uncertainty or silently overwrite an earlier decision.
 
+## Dispatcher Control
+
+- When background execution is available, always call Dispatcher with `background=true`.
+- While Dispatcher is active, prefer steering or resuming the same `task_id` to add constraints, correct direction, request a checkpoint, stop work, or continue execution.
+- Do not start another Dispatcher while one is active. Start a replacement only after the current Dispatcher completes, fails, or becomes unrecoverable.
+
 ## Hard Boundaries
 
 - Never leave mutation authority implicit.
