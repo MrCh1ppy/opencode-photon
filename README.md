@@ -84,7 +84,7 @@ Photon 的目标并不是用廉价模型替代高智力模型，而是：
 
 ## 架构
 
-***注意！里面的 Orchestrator可以被替换为GPT 5.6 Terra 或任何等智力水平模型，也就是说有GPT的订阅+Deepseek的api也可以使用，K3不是必备项***
+***注意！里面的 Orchestrator可以被替换为GPT 5.6 Terra 或任何等智力水平模型，也就是说有GPT的订阅+Deepseek的api也可以使用，K3不是必备项，但是仍然强烈建议使用K3,因为其主动性更强，更加胜任编排***
 
 ```text
 User <-> Orchestrator / K3
