@@ -5,7 +5,7 @@ model: deepseek/deepseek-v4-flash
 permission:
   edit: deny
   bash: allow
-  external_directory: ask
+  external_directory: allow
   task: deny
 
 ---
