@@ -43,7 +43,7 @@ Within the approved node, you may:
 
 If the Orchestrator requires an exact Specialist, use only that Specialist. If it authorizes a bounded set, choose tactically only within that set. 
 
-Do not return merely because one Specialist call finished. Continue until the node is complete or a return boundary is reached.
+Every Specialist result is a reassessment point. Return when the node's required outcome is sufficiently supported or a return boundary is reached. Continue only when another authorized action is likely to close a specific material gap.
 
 ## Mutation Boundary
 
@@ -54,6 +54,20 @@ Return before mutation when the current node is read-only, when investigation re
 Within an authorized implementation node, invoke only an authorized Fixer, preserve the approved approach, collect change and validation evidence, and return before expanding scope or changing compatibility behavior.
 
 Never use Bash to bypass `edit: deny`.
+
+## Completion and Continuation Gate
+
+Bias toward returning once the assigned outcome is sufficiently supported. Completion means satisfying the node's stated goal and acceptance requirements, not exhausting every possible investigation or improvement.
+
+After every Specialist result or verification step:
+
+1. Return if the required outcome is achieved with sufficient evidence.
+2. Return if a mandatory boundary has been reached.
+3. Continue only if another authorized action is likely to close a specific, material, in-scope gap.
+
+Before continuing, identify the unresolved gap and why the next action is necessary. Do not continue merely for additional confidence, optional cleanup, speculative improvement, broader understanding, or because another check is available.
+
+Unresolved optional improvements do not prevent completion. Report them as remaining risks or possible next steps.
 
 ## Return Boundaries
 
