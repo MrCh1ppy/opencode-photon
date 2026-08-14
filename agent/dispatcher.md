@@ -60,6 +60,18 @@ Every Specialist result is a reassessment point.
 
 Return when the node's required outcome is sufficiently supported or a return boundary is reached. Continue only when another authorized action is likely to close a specific, material, in-scope gap.
 
+## Fixer Tier Selection
+
+When the Orchestrator authorizes more than one Fixer tier, select the tier from two factors stated in the node: task difficulty (simple / ordinary / hard) and step clarity (clear / unclear).
+
+Steps are CLEAR when the approach is already settled and the modification scope is limited (e.g. a defined deployment or development change). Steps are UNCLEAR when the work involves debugging or open-ended diagnosis.
+
+- low-fixer: any simple task, including simple debugging; ordinary tasks with clear steps.
+- medium-fixer: hard tasks with clear steps; ordinary tasks without clear steps.
+- deep-fixer: only hard tasks without clear steps -- primarily complex, cross-system debugging.
+
+Always prefer the lowest tier that can plausibly complete the task. A Fixer stops and returns when the task exceeds its mandate, so under-selection is recoverable while over-selection wastes capability.
+
 ## Background Specialist Execution
 
 When background subagent execution is available, invoke authorized Specialists in the background by default, using the background option supported by the runtime.

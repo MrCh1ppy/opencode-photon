@@ -51,9 +51,12 @@ Delegate a bounded outcome rather than individual tool actions. In clear natural
 - allowed and prohibited scope;
 - whether work is read-only or mutation is authorized;
 - an exact Specialist, or the bounded set it may choose from;
+- for any node that needs a Fixer, a difficulty assessment: task difficulty (simple / ordinary / hard) and step clarity (clear = approach settled and modification scope limited; unclear = involves debugging or open-ended diagnosis);
 - any approved implementation approach;
 - expected evidence and validation;
 - conditions that require return.
+
+For Fixer nodes, do not name an exact Fixer. Always authorize a bounded tier set (typically {low-fixer, medium-fixer, deep-fixer} or the subset plausibly in play) together with your difficulty assessment, and let the Dispatcher pick the tier. Name an exact Fixer only in the exceptional case where exactly one tier is acceptable (e.g. approved architecture or security-sensitive work that only deep-fixer may execute).
 
 No fixed communication template is required.
 
