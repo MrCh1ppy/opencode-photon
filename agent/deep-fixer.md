@@ -2,6 +2,7 @@
 description: Implements complex or high-risk changes from an approved architecture for the Dispatcher.
 mode: subagent
 model: openai/gpt-5.6-sol
+variant: medium
 permission:
   edit: allow
   bash: allow

@@ -1,18 +1,16 @@
 ---
 description: Executes bounded Orchestrator nodes through authorized Specialists.
 mode: subagent
-model: openai/gpt-5.6-terra
+model: opencode-go/deepseek-v4-flash
+variant: max
 permission:
-  "*": deny
-  read: allow
-  glob: allow
-  grep: allow
-  list: allow
   edit: deny
   bash: allow
   todowrite: allow
+  read: allow
+  webfetch: allow
+  doom_loop: allow
   external_directory: ask
-  task_status: allow
   task:
     "*": deny
     explorer: allow

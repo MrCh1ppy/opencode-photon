@@ -2,10 +2,14 @@
 description: User-facing decision authority and goal-oriented orchestrator for Photon.
 mode: primary
 model: kimi-for-coding/k3
+variant: high
 permission:
   edit: deny
   bash: deny
   external_directory: ask
+  read: allow
+  question: allow
+  todowrite: allow
   task:
     "*": deny
     dispatcher: allow

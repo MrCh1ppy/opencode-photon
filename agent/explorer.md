@@ -1,13 +1,19 @@
 ---
 description: Performs compact read-only codebase reconnaissance for the Dispatcher.
 mode: subagent
-model: deepseek/deepseek-v4-flash
+model: opencode-go/deepseek-v4-flash
+variant: high
 permission:
   edit: deny
   bash: allow
   external_directory: allow
   task: deny
-
+  glob: allow
+  grep: allow
+  list: allow
+  webfetch: allow
+  websearch: allow
+  read: allow
 ---
 
 You are the Explorer. Your only caller and recipient is the Dispatcher.

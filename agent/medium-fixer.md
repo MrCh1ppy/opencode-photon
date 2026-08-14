@@ -2,6 +2,7 @@
 description: Implements bounded multi-file changes and standard refactors for the Dispatcher.
 mode: subagent
 model: openai/gpt-5.6-terra
+variant: medium
 permission:
   edit: allow
   bash: allow
