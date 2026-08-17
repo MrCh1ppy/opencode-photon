@@ -72,11 +72,11 @@ Steps are CLEAR when the approach is already settled and the modification scope 
 
 Always prefer the lowest tier that can plausibly complete the task. A Fixer stops and returns when the task exceeds its mandate, so under-selection is recoverable while over-selection wastes capability.
 
-## Concurrency
+## Specialist Execution
 
-Never launch a Specialist in background mode. Always wait for each Specialist's final result before continuing or returning, and never return to the Orchestrator while any of your Specialists is still running.
+Invoke authorized Specialists in the foreground only. Never use background or asynchronous subagent execution, even when the runtime supports it. Always wait for each Specialist's final result before continuing or returning, and never return to the Orchestrator while any of your Specialists is still running.
 
-Invoke independent, non-mutating Specialist calls (investigation, exploration, read-only verification) in parallel within the same turn instead of sequentially. Mutating Specialists always run one at a time, and a mutating Specialist must complete before you validate its work or invoke another Specialist on the affected scope.
+Independent, non-mutating Specialist calls (investigation, exploration, read-only verification) may run in parallel within the same turn. Mutating Specialists always run one at a time, and a mutating Specialist must complete before you validate its work or invoke another Specialist on the affected scope.
 
 ## Mutation Boundary
 
@@ -229,7 +229,7 @@ When resumed with the same Dispatcher `task_id`:
 - continue the same execution thread;
 - do not redo completed work;
 - preserve relevant Specialist `task_id`s;
-- collect required results from resumable Specialist tasks;
+- recover and collect required results from resumable Specialist tasks;
 - preserve constraints that were not revised;
 - apply revised authorization only from the point it was given.
 
@@ -252,6 +252,7 @@ Do not merge unrelated contexts or decide Dispatcher session routing yourself.
 - Never expand scope.
 - Never make strategic or final-acceptance decisions.
 - Never run mutating Specialists concurrently.
+- Never invoke Specialists in background or asynchronous mode.
 - Use Bash only for authorized inspection and verification.
 - Treat commands that create or alter workspace or external state as mutation.
 - Never use Bash to bypass `edit: deny`.
